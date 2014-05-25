@@ -1,0 +1,18 @@
+# view AndroidManifest.xml #generated:32
+-keep class com.avos.avoscloud.AVBroadcastReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:30
+-keep class com.avos.avoscloud.PushService { <init>(...); }
+
+# view AndroidManifest.xml #generated:39
+-keep class com.lzw.chat.avobject.AVReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:15
+-keep class com.lzw.chat.base.App { <init>(...); }
+
+# view AndroidManifest.xml #generated:19
+-keep class com.lzw.chat.ui.ChatActivity { <init>(...); }
+
+# view res/layout/chat_record.xml #generated:23
+-keep class com.lzw.chat.view.RecordButton { <init>(...); }
+
