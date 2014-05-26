@@ -15,9 +15,9 @@
     <application
         android:label="@string/two"
         android:icon="@drawable/icon"
-        android:name=".base.App">
+        android:name="com.lzw.chat.base.App">
         <activity
-            android:name=".ui.ChatActivity"
+            android:name="com.lzw.chat.ui.ChatActivity"
             android:label="@string/two"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:launchMode="singleTask">
@@ -36,7 +36,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".avobject.AVReceiver">
+        <receiver android:name="com.lzw.chat.avobject.AVReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />

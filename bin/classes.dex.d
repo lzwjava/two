@@ -1,4 +1,5 @@
 /home/lzw/workspace/lzw_chat/bin/classes.dex : \
+/home/lzw/workspace/lzw_chat/bin/classes/com/lzw/chat/R$raw.class \
 /home/lzw/workspace/lzw_chat/bin/classes/com/lzw/chat/R.class \
 /home/lzw/workspace/lzw_chat/bin/classes/com/lzw/chat/R$drawable.class \
 /home/lzw/workspace/lzw_chat/bin/classes/com/lzw/chat/Manifest.class \

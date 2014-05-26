@@ -92,6 +92,7 @@
 /home/lzw/workspace/lzw_chat/res/drawable-xhdpi/bg_record_pressed.9.png \
 /home/lzw/workspace/lzw_chat/res/drawable-xhdpi/chat_right.png \
 /home/lzw/workspace/lzw_chat/res/drawable-xhdpi/top_background_default_thumb_green.jpg \
+/home/lzw/workspace/lzw_chat/res/raw/room \
 /home/lzw/workspace/lzw_chat/res/drawable-mdpi/ic_launcher.png \
 /home/lzw/workspace/lzw_chat/res/values/strings.xml \
 /home/lzw/workspace/lzw_chat/res/values/styles.xml \

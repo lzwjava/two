@@ -15,10 +15,10 @@ public class Msg extends AVObject {
   public static final String TEXT = "text";
   public static final String ROOM = "room";
   public static final String CREATED_AT = "createdAt";
-  public static final String LENGTH = "length";
+  //public static final String LENGTH = "length";
   String voicePath;
   int length;
-  //int room;
+  //String room;
   //AVFile voice;
   //String fromId;
   //String text;
@@ -50,11 +50,11 @@ public class Msg extends AVObject {
     put(TEXT,text);
   }
 
-  public int getRoom() {
-    return getInt(ROOM);
+  public String getRoom() {
+    return getString(ROOM);
   }
 
-  public void setRoom(int room) {
+  public void setRoom(String room) {
     put(ROOM,room);
   }
 

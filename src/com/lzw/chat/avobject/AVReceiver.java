@@ -74,7 +74,7 @@ public class AVReceiver extends BroadcastReceiver {
   }
 
   public static String getChannel() {
-    return "room" + App.room;
+    return App.room;
   }
 
   private static AVPush getAVPUshByChannel() {
