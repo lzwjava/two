@@ -14,7 +14,7 @@
 
     <application
         android:label="@string/two"
-        android:icon="@drawable/icon"
+        android:icon="@drawable/app_icon128"
         android:name="com.lzw.chat.base.App">
         <activity
             android:name="com.lzw.chat.ui.ChatActivity"
