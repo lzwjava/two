@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.view.View;
@@ -156,7 +157,12 @@ public class ChatActivity extends Activity implements OnClickListener {
     mAdapter = new ChatMsgViewAdapter(this, mDataArrays);
     mAdapter.setOnClickListener(new ClickListener());
     mListView.setAdapter(mAdapter);
-    refresh();
+    new Handler().postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        refresh();
+      }
+    },100);
   }
 
 
@@ -210,10 +216,12 @@ public class ChatActivity extends Activity implements OnClickListener {
       super.onPostExecute(aVoid);
       progressBar.setVisibility(View.INVISIBLE);
       if (res) {
+        List<ChatMsgEntity> sublists=new ArrayList<ChatMsgEntity>();
         for (Msg msg : msgs) {
           ChatMsgEntity entity = getChatMsgEntity(msg);
-          mDataArrays.add(entity);
+          sublists.add(entity);
         }
+        mDataArrays.addAll(sublists);
         mAdapter.notifyDataSetChanged();
         scroolToLast();
       } else {

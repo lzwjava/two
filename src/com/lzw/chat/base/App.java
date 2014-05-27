@@ -2,6 +2,7 @@ package com.lzw.chat.base;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import com.avos.avoscloud.AVAnalytics;
@@ -27,6 +28,7 @@ public class App extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
+    fixAsyncTaskBug();
     AVObject.registerSubclass(Msg.class);
     AVObject.registerSubclass(UpdateInfo.class);
     AVOSCloud.initialize(this, "0upi3x18tihc2eu8ie4ringefg0lm6bwmddb5g6xfvzmhvir",
@@ -57,5 +59,16 @@ public class App extends Application {
     }else{
       App.room= pref.getString(ROOM,"2");
     }
+  }
+
+
+  public void fixAsyncTaskBug() {
+    new AsyncTask<Void, Void, Void>() {
+
+      @Override
+      protected Void doInBackground(Void... params) {
+        return null;
+      }
+    }.execute();
   }
 }
