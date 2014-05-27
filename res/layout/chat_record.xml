@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/recordLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/bottomHeight"
     android:layout_alignParentBottom="true"
-    android:background="@drawable/chat_footer_bg">
+    android:background="@drawable/home_bg_bottombar">
 
 
     <ImageButton
@@ -24,12 +24,12 @@
         android:id="@+id/recordBtn"
         android:layout_toRightOf="@+id/keyboardBtn"
         android:layout_width="match_parent"
-        android:background="@drawable/bg_record"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
+        android:background="@drawable/circle_green_on"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:layout_height="wrap_content"
         android:text="@string/pressToRecord"/>
 </RelativeLayout>

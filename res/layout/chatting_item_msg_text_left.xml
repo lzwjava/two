@@ -15,6 +15,7 @@
             android:id="@+id/tv_sendtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="time"
             style="@style/chat_text_date_style" />
 
     </LinearLayout>

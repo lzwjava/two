@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.PushService;
@@ -49,6 +50,7 @@ public class ChatActivity extends Activity implements OnClickListener {
   private View keyboardBtn;
   ChatMsgViewAdapter.ViewHolder curHolder;
   MyOnCompletionListener completionListener;
+  ProgressBar progressBar;
 
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -85,6 +87,7 @@ public class ChatActivity extends Activity implements OnClickListener {
         sendTask.execute();
       }
     });
+    progressBar= (ProgressBar) findViewById(R.id.progressBar);
     recordLayout = findViewById(R.id.recordLayout);
     keyboardLayout = findViewById(R.id.rl_bottom);
     voiceBtn = findViewById(R.id.voiceBtn);
@@ -180,6 +183,7 @@ public class ChatActivity extends Activity implements OnClickListener {
     @Override
     protected void onPostExecute(Void aVoid) {
       super.onPostExecute(aVoid);
+      progressBar.setVisibility(View.INVISIBLE);
       if (res) {
         for (Msg msg : msgs) {
           ChatMsgEntity entity = getChatMsgEntity(msg);
@@ -273,6 +277,12 @@ public class ChatActivity extends Activity implements OnClickListener {
 
     public void setLen(int len) {
       this.len = len;
+    }
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override

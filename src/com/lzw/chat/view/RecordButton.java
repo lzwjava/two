@@ -104,7 +104,7 @@ public class RecordButton extends Button {
 		recordIndicator.setOnDismissListener(onDismiss);
 		LayoutParams lp = recordIndicator.getWindow().getAttributes();
 		lp.gravity = Gravity.CENTER;
-    setBackgroundResource(R.drawable.bg_record_pressed);
+    setBackgroundResource(R.drawable.circle_green_off);
 		startRecording();
 		recordIndicator.show();
 	}
@@ -112,7 +112,7 @@ public class RecordButton extends Button {
 	private void finishRecord() {
 		stopRecording();
 		recordIndicator.dismiss();
-    setBackgroundResource(R.drawable.bg_record_normal);
+    setBackgroundResource(R.drawable.circle_green_on);
 
 		long intervalTime = System.currentTimeMillis() - startTime;
 		if (intervalTime < MIN_INTERVAL_TIME) {

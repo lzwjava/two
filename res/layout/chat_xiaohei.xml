@@ -2,23 +2,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/chat_bg_default">
+    android:background="#f9f9f9">
 
     <RelativeLayout
         android:id="@+id/rl_layout"
         android:layout_width="fill_parent"
         android:layout_height="45dp"
-        android:background="@drawable/title_bar"
-        android:gravity="center_vertical">
+        android:background="@drawable/home_bg_topbar">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/two"
-            android:textColor="#ffffff"
+            android:textColor="#000"
             android:textSize="20sp" />
 
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"/>
     </RelativeLayout>
 
     <ListView
@@ -37,17 +47,17 @@
         android:id="@+id/bottomLayout"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="@dimen/bottomHeight">
 
         <include layout="@layout/chat_record" />
 
         <RelativeLayout
             android:id="@+id/rl_bottom"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/bottomHeight"
             android:layout_alignParentBottom="true"
             android:visibility="visible"
-            android:background="@drawable/chat_footer_bg">
+            android:background="@drawable/home_bg_bottombar">
 
             <ImageButton
                 android:id="@+id/voiceBtn"
@@ -56,12 +66,12 @@
                 android:src="@drawable/chatting_setmode_voice_btn_normal"
                 android:layout_alignParentLeft="true"
                 android:background="@null"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true" />
 
             <Button
                 android:id="@+id/btn_send"
                 android:layout_width="60dp"
-                android:layout_height="40dp"
+                android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
