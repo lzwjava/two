@@ -1,6 +1,7 @@
 package com.lzw.chat.base;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.Preference;
@@ -33,17 +34,16 @@ public class App extends Application {
     AVObject.registerSubclass(UpdateInfo.class);
     AVOSCloud.initialize(this, "0upi3x18tihc2eu8ie4ringefg0lm6bwmddb5g6xfvzmhvir",
         "ywi5z5az107oj1fxzsitz7b1kiv3x3eiqsca03qtqj7oldbo");
-    initRoomInfo();
     if(!debug){
       AVAnalytics.enableCrashReport(this, true);
     }
   }
 
-  public void initRoomInfo() {
-    SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(this);
+  public static void initRoomInfo(Context cxt) {
+    SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(cxt);
     boolean isFirstInstall = pref.getBoolean("isFirstInstall", true);
     if(isFirstInstall){
-      InputStream in= getResources().openRawResource(R.raw.room);
+      InputStream in= cxt.getResources().openRawResource(R.raw.room);
       InputStreamReader reader=new InputStreamReader(in);
       BufferedReader bf=new BufferedReader(reader);
       try {
@@ -55,7 +55,7 @@ public class App extends Application {
         e.printStackTrace();
       }
       pref.edit().putBoolean(IS_FIRST_INSTALL,false).commit();
-      initRoomInfo();
+      initRoomInfo(cxt);
     }else{
       App.room= pref.getString(ROOM,"2");
     }

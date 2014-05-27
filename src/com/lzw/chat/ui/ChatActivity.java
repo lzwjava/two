@@ -67,6 +67,7 @@ public class ChatActivity extends Activity implements OnClickListener {
     super.onCreate(savedInstanceState);
     cxt = this;
     instance = this;
+    App.initRoomInfo(cxt);
     getWindow().setSoftInputMode(
         WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     setContentView(R.layout.chat_xiaohei);
