@@ -1,9 +1,14 @@
 package com.lzw.chat.ui;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -20,6 +25,7 @@ import com.lzw.chat.avobject.AVReceiver;
 import com.lzw.chat.avobject.Msg;
 import com.lzw.chat.base.App;
 import com.lzw.chat.entity.ChatMsgEntity;
+import com.lzw.chat.mgr.UpdateTask;
 import com.lzw.chat.util.Logger;
 import com.lzw.chat.util.PathUtils;
 import com.lzw.chat.util.TimeUtils;
@@ -33,6 +39,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatActivity extends Activity implements OnClickListener {
+  public static final String CUR_MODE = "curMode";
+  public static final int KEYBOARD = 0;
+  public static final int VOICE_MODE = 1;
   private Button mBtnSend;
   private EditText mEditTextContent;
   private ListView mListView;
@@ -51,6 +60,7 @@ public class ChatActivity extends Activity implements OnClickListener {
   ChatMsgViewAdapter.ViewHolder curHolder;
   MyOnCompletionListener completionListener;
   ProgressBar progressBar;
+  int curMode;
 
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -66,7 +76,22 @@ public class ChatActivity extends Activity implements OnClickListener {
     initData();
     initPush();
     completionListener = new MyOnCompletionListener();
-    voiceBtn.performClick();
+    UpdateTask.runUpdateTask(cxt);
+    loadCurMode();
+  }
+
+  private void loadCurMode() {
+    SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(this);
+    int mode= pref.getInt(CUR_MODE, VOICE_MODE);
+    setLayoutByMode(mode);
+  }
+
+  private void setLayoutByMode(int mode) {
+    if(mode==KEYBOARD){
+      keyboardBtn.performClick();
+    }else{
+      voiceBtn.performClick();
+    }
   }
 
   private void initPlayer() {
@@ -197,6 +222,7 @@ public class ChatActivity extends Activity implements OnClickListener {
     }
   }
 
+
   private int getAudioLength(String path) throws IOException {
     player.reset();
     player.setDataSource(path);
@@ -226,7 +252,9 @@ public class ChatActivity extends Activity implements OnClickListener {
   }
 
   private String getMyId() {
-    return AVInstallation.getCurrentInstallation().getInstallationId();
+    WifiManager wm=(WifiManager)getSystemService(Context.WIFI_SERVICE);
+    String mac=wm.getConnectionInfo().getMacAddress();
+    return mac;
   }
 
   @Override
@@ -246,11 +274,13 @@ public class ChatActivity extends Activity implements OnClickListener {
   }
 
   private void showVoice() {
+    curMode=VOICE_MODE;
     keyboardLayout.setVisibility(View.GONE);
     recordLayout.setVisibility(View.VISIBLE);
   }
 
   private void showKeyboard() {
+    curMode=KEYBOARD;
     keyboardLayout.setVisibility(View.VISIBLE);
     recordLayout.setVisibility(View.GONE);
   }
@@ -377,6 +407,12 @@ public class ChatActivity extends Activity implements OnClickListener {
     if (player != null) {
       player.release();
     }
+    saveCurMode();
+  }
+
+  private void saveCurMode() {
+    SharedPreferences pref=PreferenceManager.getDefaultSharedPreferences(cxt);
+    pref.edit().putInt(CUR_MODE,curMode).commit();
   }
 }
 

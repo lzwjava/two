@@ -6,4 +6,8 @@
     <string name="pressToRecord">按住录音</string>
     <string name="ok">ok</string>
     <string name="two">两个</string>
+    <string name="update_title">更新日志</string>
+    <string name="installNew">安装新版本</string>
+    <string name="haveNewVersion">版本更新</string>
+    <string name="later">稍后提醒</string>
 </resources>

@@ -11,6 +11,8 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:label="@string/two"
@@ -44,5 +46,13 @@
                 <action android:name="com.avos.UPDATE_STATUS" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name="com.lzw.chat.mgr.DownloadApkReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
+            </intent-filter>
+        </receiver>
+        <meta-data android:name="Channel ID" android:value="AVOS Cloud"/>
     </application>
 </manifest>
