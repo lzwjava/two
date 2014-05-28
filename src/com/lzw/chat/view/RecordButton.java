@@ -116,7 +116,7 @@ public class RecordButton extends Button {
 
 		long intervalTime = System.currentTimeMillis() - startTime;
 		if (intervalTime < MIN_INTERVAL_TIME) {
-			Toast.makeText(getContext(), "时间太短！", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getContext(), getContext().getString(R.string.sayMore), Toast.LENGTH_SHORT).show();
 			File file = new File(mFileName);
 			file.delete();
 			return;

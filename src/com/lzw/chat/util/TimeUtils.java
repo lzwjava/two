@@ -11,15 +11,14 @@ public class TimeUtils {
     Calendar c = Calendar.getInstance();
     c.setTime(date);
 
-    String year = String.valueOf(c.get(Calendar.YEAR));
     String month = String.valueOf(c.get(Calendar.MONTH));
     String day = String.valueOf(c.get(Calendar.DAY_OF_MONTH) + 1);
     String hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
     String mins = String.valueOf(c.get(Calendar.MINUTE));
+    String secs=String.valueOf(c.get(Calendar.SECOND));
 
     StringBuffer sbBuffer = new StringBuffer();
-    sbBuffer.append(year + "-" + month + "-" + day + " " + hour + ":" + mins);
-
+    sbBuffer.append(month + "-" + day + " " + hour + ":" + mins+":"+secs);
     return sbBuffer.toString();
   }
 }

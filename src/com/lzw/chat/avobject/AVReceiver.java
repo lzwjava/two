@@ -49,20 +49,26 @@ public class AVReceiver extends BroadcastReceiver {
           JSONObject json = new JSONObject(extras.
               getString("com.avos.avoscloud.Data"));
           if (ChatActivity.instance == null || ChatActivity.isPause) {
-            Logger.d("start activity");
-            Intent intent1 = new Intent(context, ChatActivity.class);
-            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent1);
+            openChat(context);
             notify(context,json);
           } else {
             Logger.d("refresh datas");
             ChatActivity.instance.refresh();
           }
         }
+      }else if(action!=null && action.equals(Intent.ACTION_BOOT_COMPLETED)){
+        openChat(context);
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  public void openChat(Context cxt) {
+    Logger.d("start activity");
+    Intent intent1 = new Intent(cxt, ChatActivity.class);
+    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    cxt.startActivity(intent1);
   }
 
   public void notify(Context context, JSONObject json) throws JSONException {

@@ -12,4 +12,6 @@
     <string name="later">稍后提醒</string>
     <string name="newReply">新的回复</string>
     <string name="voice">语音</string>
+    <string name="getDataFailed">获取数据失败</string>
+    <string name="sayMore">说多点吧～</string>
 </resources>

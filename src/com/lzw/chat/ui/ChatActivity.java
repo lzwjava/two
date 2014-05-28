@@ -23,7 +23,9 @@ import com.lzw.chat.adapter.ChatMsgViewAdapter;
 import com.lzw.chat.avobject.AVReceiver;
 import com.lzw.chat.avobject.Msg;
 import com.lzw.chat.base.App;
+import com.lzw.chat.db.DBHelper;
 import com.lzw.chat.entity.ChatMsgEntity;
+import com.lzw.chat.mgr.Network;
 import com.lzw.chat.mgr.UpdateTask;
 import com.lzw.chat.util.Logger;
 import com.lzw.chat.util.PathUtils;
@@ -32,9 +34,11 @@ import com.lzw.chat.util.Utils;
 import com.lzw.chat.view.RecordButton;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ChatActivity extends Activity implements OnClickListener {
@@ -60,11 +64,13 @@ public class ChatActivity extends Activity implements OnClickListener {
   MyOnCompletionListener completionListener;
   ProgressBar progressBar;
   int curMode;
+  DBHelper dbHelper;
 
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     cxt = this;
     instance = this;
+    dbHelper=new DBHelper(cxt,App.DB_NAME,App.DB_VER);
     App.initRoomInfo(cxt);
     getWindow().setSoftInputMode(
         WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -202,19 +208,18 @@ public class ChatActivity extends Activity implements OnClickListener {
     @Override
     protected Void doInBackground(Void... params) {
       try {
-        msgs = Msg.getRoomMsgs(start);
+        msgs = Msg.getRoomMsgs(dbHelper,start);
         for (Msg msg : msgs) {
-          AVFile voice = msg.getVoice();
           String objId = msg.getObjectId();
           String dir = PathUtils.getCacheDir();
           String path = dir + objId;
           File f = new File(path);
           if(msg.isText()==false){
             if (f.exists() == false) {
-              byte[] data = voice.getData();
-              FileOutputStream out = new FileOutputStream(f);
-              out.write(data, 0, data.length);
-              out.close();
+              String voiceUrl=msg.getVoiceUrl();
+              if(voiceUrl!=null){
+                Network.downloadUrlToPath(voiceUrl,path);
+              }
             }
             int len = getAudioLength(path);
             msg.setLength(Math.round(len*1.0f/1000));
@@ -243,7 +248,7 @@ public class ChatActivity extends Activity implements OnClickListener {
         mAdapter.notifyDataSetChanged();
         scroolToLast();
       } else {
-        Utils.toast(cxt, R.string.no_network);
+        Utils.toast(cxt, R.string.getDataFailed);
       }
     }
   }
@@ -253,8 +258,7 @@ public class ChatActivity extends Activity implements OnClickListener {
     int drt=3;
     try{
       player.reset();
-      player.setDataSource(path);
-      player.prepare();
+      prepareByFD(path);
       drt= player.getDuration();
     }catch (Exception e){
       e.printStackTrace();
@@ -262,9 +266,23 @@ public class ChatActivity extends Activity implements OnClickListener {
     return drt;
   }
 
+  private void prepareByFD(String path) throws Exception {
+    if(path==null){
+      return;
+    }
+    File f=new File(path);
+    if(!f.exists()){
+      throw new Exception("no such file exists");
+    }else{
+      FileInputStream in=new FileInputStream(f);
+      player.setDataSource(in.getFD());
+      player.prepare();
+    }
+  }
+
   private ChatMsgEntity getChatMsgEntity(Msg msg) {
     ChatMsgEntity entity = new ChatMsgEntity();
-    entity.setDate(TimeUtils.getDate(msg.getCreatedAt()));
+    entity.setDate(TimeUtils.getDate(msg.getPostTime()));
     String fromId = msg.getFromId();
     String curId = Utils.getWifiMac(cxt);
     if (curId.equals(fromId)) {
@@ -350,7 +368,7 @@ public class ChatActivity extends Activity implements OnClickListener {
           AVFile file = AVFile.withAbsoluteLocalPath(App.room+ System.currentTimeMillis(),
               voicePath);
           file.save();
-          msg.setVoice(file);
+          msg.setVoiceUrl(file.getUrl());
           Logger.d("save a recod file");
           pushMsg=getString(R.string.voice);
         } else {
@@ -359,6 +377,7 @@ public class ChatActivity extends Activity implements OnClickListener {
         }
         msg.setFromId(Utils.getWifiMac(cxt));
         msg.setRoom(App.room);
+        msg.setPostTime(new Date());
         msg.save();
         AVReceiver.pushNotify(cxt,pushMsg);
         res=true;
@@ -389,13 +408,13 @@ public class ChatActivity extends Activity implements OnClickListener {
           (ChatMsgViewAdapter.ViewHolder) v.getTag();
       try {
         playAudio(holder);
-      } catch (IOException e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
     }
   }
 
-  private void playAudio(ChatMsgViewAdapter.ViewHolder holder) throws IOException {
+  private void playAudio(ChatMsgViewAdapter.ViewHolder holder) throws Exception {
     String voicePath = holder.msg.getVoicePath();
     if (player.isPlaying()) {
       showVoiceImg();
@@ -404,8 +423,7 @@ public class ChatActivity extends Activity implements OnClickListener {
     }
     Logger.d("play voice");
     player.reset();
-    player.setDataSource(voicePath);
-    player.prepare();
+    prepareByFD(voicePath);
     player.setOnCompletionListener(completionListener);
     player.start();
     curHolder = holder;

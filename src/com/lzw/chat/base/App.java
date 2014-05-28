@@ -26,6 +26,8 @@ public class App extends Application {
   public static final String ROOM = "room";
   public static String room;
   public static boolean debug = false;
+  public static String DB_NAME = "data.db3";
+  public static int DB_VER=1;
 
   @Override
   public void onCreate() {
