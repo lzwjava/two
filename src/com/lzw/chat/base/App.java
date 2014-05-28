@@ -35,6 +35,7 @@ public class App extends Application {
     AVObject.registerSubclass(UpdateInfo.class);
     AVOSCloud.initialize(this, "0upi3x18tihc2eu8ie4ringefg0lm6bwmddb5g6xfvzmhvir",
         "ywi5z5az107oj1fxzsitz7b1kiv3x3eiqsca03qtqj7oldbo");
+    AVAnalytics.start(this);
     if (!debug) {
       AVAnalytics.enableCrashReport(this, true);
     }
@@ -61,7 +62,6 @@ public class App extends Application {
       App.room = pref.getString(ROOM, "2");
     }
   }
-
 
   public void fixAsyncTaskBug() {
     new AsyncTask<Void, Void, Void>() {

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.PushService;
@@ -77,6 +78,8 @@ public class ChatActivity extends Activity implements OnClickListener {
     completionListener = new MyOnCompletionListener();
     UpdateTask.runUpdateTask(cxt);
     loadCurMode();
+    AVReceiver.cancelNotify(this);
+    AVAnalytics.trackAppOpened(getIntent());
   }
 
   private void loadCurMode() {
@@ -140,12 +143,24 @@ public class ChatActivity extends Activity implements OnClickListener {
   protected void onPause() {
     super.onPause();
     isPause = true;
+    AVAnalytics.onPause(this);
   }
 
   @Override
   protected void onResume() {
     super.onResume();
     isPause = false;
+    postRefresh();
+    AVAnalytics.onResume(this);
+  }
+
+  private void postRefresh() {
+    new Handler().postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        refresh();
+      }
+    }, 200);
   }
 
   private void saveInstallId() {
@@ -166,12 +181,6 @@ public class ChatActivity extends Activity implements OnClickListener {
     mAdapter = new ChatMsgViewAdapter(this, mDataArrays);
     mAdapter.setOnClickListener(new ClickListener());
     mListView.setAdapter(mAdapter);
-    new Handler().postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        refresh();
-      }
-    }, 100);
   }
 
 
@@ -335,6 +344,7 @@ public class ChatActivity extends Activity implements OnClickListener {
     @Override
     protected Void doInBackground(Void... params) {
       try {
+        String pushMsg;
         msg = new Msg();
         if (text == null) {
           AVFile file = AVFile.withAbsoluteLocalPath(App.room+ System.currentTimeMillis(),
@@ -342,13 +352,15 @@ public class ChatActivity extends Activity implements OnClickListener {
           file.save();
           msg.setVoice(file);
           Logger.d("save a recod file");
+          pushMsg=getString(R.string.voice);
         } else {
           msg.setText(text);
+          pushMsg=text;
         }
         msg.setFromId(Utils.getWifiMac(cxt));
         msg.setRoom(App.room);
         msg.save();
-        AVReceiver.pushNotify(cxt);
+        AVReceiver.pushNotify(cxt,pushMsg);
         res=true;
       } catch (Exception e) {
         e.printStackTrace();

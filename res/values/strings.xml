@@ -10,4 +10,6 @@
     <string name="installNew">安装新版本</string>
     <string name="haveNewVersion">版本更新</string>
     <string name="later">稍后提醒</string>
+    <string name="newReply">新的回复</string>
+    <string name="voice">语音</string>
 </resources>

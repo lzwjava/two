@@ -1,8 +1,12 @@
 package com.lzw.chat.avobject;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import com.avos.avoscloud.*;
 import com.lzw.chat.base.App;
@@ -10,7 +14,7 @@ import com.lzw.chat.ui.ChatActivity;
 import com.lzw.chat.util.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.lzw.chat.R;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +25,11 @@ import java.util.List;
 public class AVReceiver extends BroadcastReceiver {
   public static final String _INSTALLATION = "_Installation";
   public static final String CHANNELS = "channels";
+  public static final String ALERT = "alert";
   public static String CHAT_ACTION = "com.avos.UPDATE_STATUS";
   private static String INSTALLATION_ID = "installationId";
   private static String ACTION = "action";
+  public static int REPLY_NOTIFY_ID=2;
 
   @Override
   public void onReceive(Context context, Intent intent) {
@@ -47,6 +53,7 @@ public class AVReceiver extends BroadcastReceiver {
             Intent intent1 = new Intent(context, ChatActivity.class);
             intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent1);
+            notify(context,json);
           } else {
             Logger.d("refresh datas");
             ChatActivity.instance.refresh();
@@ -56,6 +63,34 @@ public class AVReceiver extends BroadcastReceiver {
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  public void notify(Context context, JSONObject json) throws JSONException {
+    int icon=context.getApplicationInfo().icon;
+    PendingIntent pend=PendingIntent.getActivity(context,0,
+        new Intent(context,ChatActivity.class),0);
+    Resources res=context.getResources();
+    Notification.Builder builder=new Notification.Builder(context);
+    String msg=json.getString(ALERT);
+    builder.setContentIntent(pend)
+        .setSmallIcon(icon)
+        .setWhen(System.currentTimeMillis())
+        .setTicker(msg)
+        .setContentTitle(res.getString(R.string.newReply))
+        .setContentText(msg)
+        .setAutoCancel(true);
+    NotificationManager man= (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    man.notify(REPLY_NOTIFY_ID,builder.getNotification());
+  }
+
+  public static void cancelNotify(Context cxt){
+    cancelNotification(cxt,REPLY_NOTIFY_ID);
+  }
+
+  public static void cancelNotification(Context ctx, int notifyId) {
+    String ns = Context.NOTIFICATION_SERVICE;
+    NotificationManager nMgr = (NotificationManager) ctx.getSystemService(ns);
+    nMgr.cancel(notifyId);
   }
 
   public static AVPush getAVPushByInstallationId(String installId) {
@@ -72,9 +107,10 @@ public class AVReceiver extends BroadcastReceiver {
     return data;
   }
 
-  public static void pushNotify(Context cxt) throws AVException, JSONException {
+  public static void pushNotify(Context cxt, String pushMsg) throws AVException, JSONException {
     AVPush push = getAVPUshByChannel();
     JSONObject data = getBasicPushJson();
+    data.accumulate(ALERT,pushMsg);
     push.setData(data);
     Logger.d(data.toString() + " json");
     push.send();
