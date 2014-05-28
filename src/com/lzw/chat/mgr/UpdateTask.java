@@ -28,6 +28,7 @@ public class UpdateTask extends AsyncTask<Void, Void, UpdateInfo> {
   int curVersion;
   CallBack callBack;
   private String UPDATE_INFO_ID = "5384e215e4b089312c485d85";
+  boolean taskRes;
 
   public UpdateTask(Activity context, CallBack callBack) {
     this.context = context;
@@ -134,9 +135,11 @@ public class UpdateTask extends AsyncTask<Void, Void, UpdateInfo> {
     try {
       AVQuery<UpdateInfo> query = AVObject.getQuery(UpdateInfo.class);
       info = query.get(UPDATE_INFO_ID);
+      taskRes=true;
     } catch (AVException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
+      taskRes = false;
     }
     return info;
   }
@@ -144,10 +147,12 @@ public class UpdateTask extends AsyncTask<Void, Void, UpdateInfo> {
   @Override
   protected void onPostExecute(final UpdateInfo info) {
     // TODO Auto-generated method stub
-    if (info == null) {
-      throw new NullPointerException("update apk info is null");
+    if(taskRes){
+      if (info == null) {
+        throw new NullPointerException("update apk info is null");
+      }
+      callBack.done(info);
     }
-    callBack.done(info);
     super.onPostExecute(info);
   }
 

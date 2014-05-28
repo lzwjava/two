@@ -1,15 +1,12 @@
 package com.lzw.chat.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -163,7 +160,7 @@ public class ChatActivity extends Activity implements OnClickListener {
       public void run() {
         refresh();
       }
-    },100);
+    }, 100);
   }
 
 
@@ -243,7 +240,7 @@ public class ChatActivity extends Activity implements OnClickListener {
     ChatMsgEntity entity = new ChatMsgEntity();
     entity.setDate(TimeUtils.getDate(msg.getCreatedAt()));
     String fromId = msg.getFromId();
-    String curId = getMyId();
+    String curId = Utils.getWifiMac(cxt);
     if (curId.equals(fromId)) {
       entity.setName(getString(R.string.me));
       entity.setMsgType(false);
@@ -258,12 +255,6 @@ public class ChatActivity extends Activity implements OnClickListener {
       entity.setLength(msg.getLength());
     }
     return entity;
-  }
-
-  private String getMyId() {
-    WifiManager wm=(WifiManager)getSystemService(Context.WIFI_SERVICE);
-    String mac=wm.getConnectionInfo().getMacAddress();
-    return mac;
   }
 
   @Override
@@ -329,7 +320,7 @@ public class ChatActivity extends Activity implements OnClickListener {
       try {
         msg = new Msg();
         if (text == null) {
-          AVFile file = AVFile.withAbsoluteLocalPath(getMyId() + System.currentTimeMillis(),
+          AVFile file = AVFile.withAbsoluteLocalPath(App.room+ System.currentTimeMillis(),
               voicePath);
           file.save();
           msg.setVoice(file);
@@ -337,7 +328,7 @@ public class ChatActivity extends Activity implements OnClickListener {
         } else {
           msg.setText(text);
         }
-        msg.setFromId(getMyId());
+        msg.setFromId(Utils.getWifiMac(cxt));
         msg.setRoom(App.room);
         msg.save();
         AVReceiver.pushNotify(cxt);

@@ -3,6 +3,7 @@ package com.lzw.chat.avobject;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import com.avos.avoscloud.*;
 import com.lzw.chat.base.App;
 import com.lzw.chat.ui.ChatActivity;
@@ -26,14 +27,20 @@ public class AVReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    String action = intent.getAction();
-    String channel = intent.getExtras().getString("com.avos.avoscloud.Channel");
-
-    Logger.d("got action " + action + " on channel " + channel + " with:");
     try {
-      if (action.equals(AVReceiver.CHAT_ACTION)) {
-        if (channel.equals(getChannel())) {
-          JSONObject json = new JSONObject(intent.getExtras().
+      if(intent==null){
+        return;
+      }
+      String action = intent.getAction();
+      if (action!=null && action.equals(AVReceiver.CHAT_ACTION)) {
+        Bundle extras = intent.getExtras();
+        if(extras ==null){
+          return;
+        }
+        String channel = extras.getString("com.avos.avoscloud.Channel");
+        Logger.d("got action " + action + " on channel " + channel + " with:");
+        if (channel!=null && channel.equals(getChannel())) {
+          JSONObject json = new JSONObject(extras.
               getString("com.avos.avoscloud.Data"));
           if (ChatActivity.instance == null || ChatActivity.isPause) {
             Logger.d("start activity");

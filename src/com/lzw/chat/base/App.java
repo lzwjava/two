@@ -25,7 +25,6 @@ public class App extends Application {
   public static String room;
   public static boolean debug = false;
 
-
   @Override
   public void onCreate() {
     super.onCreate();
@@ -41,7 +40,7 @@ public class App extends Application {
 
   public static void initRoomInfo(Context cxt) {
     SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(cxt);
-    boolean isFirstInstall = pref.getBoolean("isFirstInstall", true);
+    boolean isFirstInstall = pref.getBoolean(IS_FIRST_INSTALL, true);
     if(isFirstInstall){
       InputStream in= cxt.getResources().openRawResource(R.raw.room);
       InputStreamReader reader=new InputStreamReader(in);
