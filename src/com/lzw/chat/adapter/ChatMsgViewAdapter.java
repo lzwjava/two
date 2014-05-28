@@ -1,6 +1,7 @@
 package com.lzw.chat.adapter;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,7 @@ public class ChatMsgViewAdapter extends BaseAdapter {
 		boolean isComMsg = entity.getMsgType();
 
 		ViewHolder viewHolder = null;
-		if (convertView == null) {
+    if (convertView == null) {
 			if (isComMsg) {
 				convertView = mInflater.inflate(R.layout.chatting_item_msg_text_left,
 						null);
@@ -89,7 +90,7 @@ public class ChatMsgViewAdapter extends BaseAdapter {
       viewHolder.voiceImgView=convertView.findViewById(R.id.voiceImg);
 			viewHolder.tvUserName = (TextView) convertView
 					.findViewById(R.id.tv_username);
-			viewHolder.tvContent = (TextView) convertView
+      viewHolder.tvContent=(TextView) convertView
 					.findViewById(R.id.tv_chatcontent);
 			viewHolder.isComMsg = isComMsg;
 
@@ -97,34 +98,44 @@ public class ChatMsgViewAdapter extends BaseAdapter {
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
+    TextView textView=viewHolder.tvContent;
 
 		viewHolder.tvSendTime.setText(entity.getDate());
 		viewHolder.tvUserName.setText(entity.getName());
-		viewHolder.tvContent.setText(entity.getText());
-    viewHolder.tvContent.setTag(viewHolder);
+    textView.setTag(viewHolder);
     viewHolder.msg =entity;
     if(entity.isText()){
-      viewHolder.tvContent.setOnClickListener(null);
+      textView.setOnClickListener(null);
       viewHolder.voiceImgView.setVisibility(View.GONE);
+      textView.setText(entity.getText());
+      setTextViewWidth(textView,ViewGroup.LayoutParams.WRAP_CONTENT);
     }else{
-      int emptyN=0;
-      emptyN=entity.getLength();
-      if(emptyN>50){
-        emptyN=50;
+      int s;
+      s=entity.getLength();
+      int fullS=10;
+      if(s<3){
+        s=2;
+      }else if(s>10){
+        s=10;
       }
-      String empty="";
-      for(int i=0;i<emptyN;i++){
-        empty+="  ";
-      }
-      Logger.d("len"+emptyN);
-      viewHolder.tvContent.setText(empty);
-      viewHolder.tvContent.setOnClickListener(onClickListener);
+      int full=ctx.getResources().getDimensionPixelSize(R.dimen.fullContent);
+      int w=full*s/fullS;
+      Logger.d("w="+w);
+      setTextViewWidth(textView, w);
+      textView.setText("");
+      textView.setOnClickListener(onClickListener);
       viewHolder.voiceImgView.setVisibility(View.VISIBLE);
     }
 		return convertView;
 	}
 
-	public static class ViewHolder {
+  public void setTextViewWidth(TextView textView, int width) {
+    ViewGroup.LayoutParams lp = textView.getLayoutParams();
+    lp.width=width;
+    textView.setLayoutParams(lp);
+  }
+
+  public static class ViewHolder {
 		public TextView tvSendTime;
 		public TextView tvUserName;
 		public TextView tvContent;

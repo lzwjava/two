@@ -37,7 +37,7 @@ public class DBMsg {
         null, null, null, null, POST_TIME, start + ",100000");
     while (c.moveToNext()) {
       Msg msg = new Msg();
-      msg.setObjectId(OBJECT_ID);
+      msg.setObjectId(c.getString(c.getColumnIndex(OBJECT_ID)));
       msg.setVoiceUrl(c.getString(c.getColumnIndex(VOICE_URL)));
       msg.setFromId(c.getString(c.getColumnIndex(FROM_ID)));
       msg.setRoom(c.getString(c.getColumnIndex(ROOM)));
