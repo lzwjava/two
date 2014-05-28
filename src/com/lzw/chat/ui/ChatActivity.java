@@ -101,7 +101,7 @@ public class ChatActivity extends Activity implements OnClickListener {
     recordBtn = (RecordButton) findViewById(R.id.recordBtn);
     String path = PathUtils.getRecordDir() + recordN;
     recordBtn.setSavePath(path);
-    recordBtn.setOnFinishedRecordListener(new RecordButton.OnFinishedRecordListener() {
+    recordBtn.setOnFinishedRecordListener(new RecordButton.RecordEventListener() {
       @Override
       public void onFinishedRecord(String audioPath, int length) {
         recordN++;
@@ -109,6 +109,11 @@ public class ChatActivity extends Activity implements OnClickListener {
         SendTask sendTask = new SendTask(null, audioPath);
         sendTask.setLen(length);
         sendTask.execute();
+      }
+
+      @Override
+      public void onStartRecord() {
+        pausePlayer();
       }
     });
     progressBar= (ProgressBar) findViewById(R.id.progressBar);
@@ -118,6 +123,12 @@ public class ChatActivity extends Activity implements OnClickListener {
     keyboardBtn = findViewById(R.id.keyboardBtn);
     voiceBtn.setOnClickListener(this);
     keyboardBtn.setOnClickListener(this);
+  }
+
+  private void pausePlayer() {
+    if(player!=null && player.isPlaying()){
+      player.pause();
+    }
   }
 
   private void initPush() {
@@ -230,10 +241,16 @@ public class ChatActivity extends Activity implements OnClickListener {
 
 
   private int getAudioLength(String path) throws IOException {
-    player.reset();
-    player.setDataSource(path);
-    player.prepare();
-    return player.getDuration();
+    int drt=3;
+    try{
+      player.reset();
+      player.setDataSource(path);
+      player.prepare();
+      drt= player.getDuration();
+    }catch (Exception e){
+      e.printStackTrace();
+    }
+    return drt;
   }
 
   private ChatMsgEntity getChatMsgEntity(Msg msg) {

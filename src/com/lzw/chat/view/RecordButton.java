@@ -42,15 +42,15 @@ public class RecordButton extends Button {
 		mFileName = path;
 	}
 
-	public void setOnFinishedRecordListener(OnFinishedRecordListener listener) {
+	public void setOnFinishedRecordListener(RecordEventListener listener) {
 		finishedListener = listener;
 	}
 
 	private String mFileName = null;
 
-	private OnFinishedRecordListener finishedListener;
+	private RecordEventListener finishedListener;
 
-	private static final int MIN_INTERVAL_TIME = 2000;// 2s
+	private static final int MIN_INTERVAL_TIME = 1000;// 2s
 	private long startTime;
 
 	private Dialog recordIndicator;
@@ -152,7 +152,7 @@ public class RecordButton extends Button {
 		recorder.start();
 		thread = new ObtainDecibelThread();
 		thread.start();
-
+    finishedListener.onStartRecord();
 	}
 
 	private void stopRecording() {
@@ -220,7 +220,9 @@ public class RecordButton extends Button {
 		}
 	}
 
-	public interface OnFinishedRecordListener {
+	public interface RecordEventListener {
 		public void onFinishedRecord(String audioPath, int length);
-	}
+
+    void onStartRecord();
+  }
 }
