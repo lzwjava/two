@@ -11,7 +11,9 @@ import com.avos.avoscloud.AVObject;
 import com.lzw.chat.R;
 import com.lzw.chat.avobject.Msg;
 import com.lzw.chat.avobject.UpdateInfo;
-import com.lzw.chat.util.Logger;
+import com.lzw.chat.utils.Logger;
+import com.lzw.chat.utils.VpnUtils;
+import org.apache.http.client.HttpClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,13 +27,18 @@ public class App extends Application {
   public static final String IS_FIRST_INSTALL = "isFirstInstall";
   public static final String ROOM = "room";
   public static String room;
-  public static boolean debug = false;
+  public static boolean debug = true;
   public static String DB_NAME = "data.db3";
-  public static int DB_VER=1;
+  public static int DB_VER = 1;
+  public static Context cxt;
+  public static boolean isUseVpn;
+  public static HttpClient client;
 
   @Override
   public void onCreate() {
     super.onCreate();
+    cxt=this;
+    App.client = VpnUtils.getNewHttpClient();
     fixAsyncTaskBug();
     AVObject.registerSubclass(Msg.class);
     AVObject.registerSubclass(UpdateInfo.class);

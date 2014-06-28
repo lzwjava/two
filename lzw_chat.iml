@@ -3,23 +3,25 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
+        <proGuardCfgFiles>
+          <file>file://$USER_HOME$/android/adt-bundle-linux-x86-20131030/sdk/tools/proguard/proguard-android.txt</file>
+        </proGuardCfgFiles>
         <option name="UPDATE_PROPERTY_FILES" value="true" />
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
-    <exclude-output />
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/bin/classes" />
+    <output-test url="file://$USER_HOME$/download/SlidingViewSwitcher/out/test/lzw_chat" />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
     </content>
-    <orderEntry type="jdk" jdkName="Android 4.4.2 Google APIs x86" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="avoscloud-v2.5.4.1" level="project" />
-    <orderEntry type="library" name="fastjson" level="project" />
-    <orderEntry type="library" name="httpmime-4.2.4" level="project" />
-    <orderEntry type="library" name="android-async-http-1.4.4-fix" level="project" />
-    <orderEntry type="library" name="avosfeedback-v2.5.4.1" level="project" />
+    <orderEntry type="module" module-name="lzw_commons" />
+    <orderEntry type="library" name="avosstatistics-v2.5.8.2" level="application" />
+    <orderEntry type="library" name="jsoup-1.7.3" level="project" />
   </component>
 </module>
 

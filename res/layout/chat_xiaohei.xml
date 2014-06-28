@@ -4,39 +4,11 @@
     android:layout_height="fill_parent"
     android:background="#f9f9f9">
 
-    <RelativeLayout
-        android:id="@+id/rl_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="45dp"
-        android:background="@drawable/home_bg_topbar">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/two"
-            android:textColor="#000"
-            android:textSize="20sp" />
-
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:visibility="gone"
-            style="@android:style/Widget.ProgressBar.Small"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"/>
-    </RelativeLayout>
-
     <ListView
         android:id="@+id/listview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/bottomLayout"
-        android:layout_below="@id/rl_layout"
         android:cacheColorHint="#0000"
         android:divider="@null"
         android:dividerHeight="5dp"

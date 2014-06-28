@@ -3,18 +3,19 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="6dp" >
+    android:padding="3dp" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_sendtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:background="@drawable/time_back"
             android:padding="2dp"
             android:textColor="#ffffff"
@@ -25,12 +26,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp" >
+        android:layout_marginTop="@dimen/chatItemMarginTop" >
 
         <ImageView
             android:id="@+id/iv_userhead"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="@dimen/userHead"
+            android:layout_height="@dimen/userHead"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/top_background_default_thumb_green"

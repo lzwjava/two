@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.lzw.chat.R;
-import com.lzw.chat.util.Logger;
+import com.lzw.chat.utils.Logger;
 
 import java.io.File;
 import java.io.IOException;

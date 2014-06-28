@@ -11,26 +11,48 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.SET_DEBUG_APP"></uses-permission>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
 
     <application
-        android:label="@string/two"
+        android:label="@string/app_name"
         android:icon="@drawable/app_icon128"
-        android:name="com.lzw.chat.base.App">
+        android:name="com.lzw.chat.base.App"
+        android:theme="@android:style/Theme.Holo.Light"
+        android:debuggable="true">
         <activity
-            android:name="com.lzw.chat.ui.ChatActivity"
-            android:label="@string/two"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:name="com.lzw.chat.activity.ChatActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Holo.Light"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"></activity>
+
+        <activity
+            android:name=".activity.SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.MainActivity"
+            android:launchMode="singleTask"></activity>
+
+        <activity
+            android:name=".activity.SystemLogin"
+            android:label="@string/systemLogin"></activity>
+
+        <activity android:name=".activity.PersonInfoActivity"
+            android:label="@string/personInfo"></activity>
+
 
         <service android:name="com.avos.avoscloud.PushService" />
 
@@ -41,7 +63,8 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.lzw.chat.avobject.AVReceiver"
+        <receiver
+            android:name=".receiver.AVReceiver"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -51,12 +74,15 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.lzw.chat.mgr.DownloadApkReceiver">
+        <receiver android:name="com.lzw.chat.service.DownloadApkReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
             </intent-filter>
         </receiver>
-        <meta-data android:name="Channel ID" android:value="AVOS Cloud"/>
+
+        <meta-data
+            android:name="Channel ID"
+            android:value="AVOS Cloud" />
     </application>
 </manifest>

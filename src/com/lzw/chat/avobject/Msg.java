@@ -1,34 +1,31 @@
 package com.lzw.chat.avobject;
 
-import android.content.Context;
-import com.avos.avoscloud.*;
-import com.lzw.chat.base.App;
-import com.lzw.chat.db.DBHelper;
-import com.lzw.chat.db.DBMsg;
+import com.avos.avoscloud.AVClassName;
+import com.avos.avoscloud.AVObject;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by lzw on 14-5-24.
  */
 @AVClassName("Msg")
 public class Msg extends AVObject {
-  public static final String FROM_ID = "fromId";
+  public static final String FROM_USER = "fromUser";
   public static final String TEXT = "text";
-  public static final String ROOM = "room";
   public static final String CREATED_AT = "createdAt";
   public static final String VOICE_URL = "voiceUrl";
   public static final String POST_TIME = "postTime";
+  public static final String TO_USER = "toUser";
+  public static final String LENGTH = "length";
   //public static final String LENGTH = "length";
   String voicePath;
-  int length;
+  //int length;
   //Date postTime;
   //String room;
   //String voiceUrl;
   //String fromId;
   //String text;
+  //String toUser;
 
   public Msg() {
   }
@@ -38,15 +35,23 @@ public class Msg extends AVObject {
   }
 
   public void setVoiceUrl(String voiceUrl) {
-    put(VOICE_URL,voiceUrl);
+    put(VOICE_URL, voiceUrl);
   }
 
-  public String getFromId() {
-    return getString(FROM_ID);
+  public String getFromUser() {
+    return getString(FROM_USER);
   }
 
-  public void setFromId(String fromId) {
-    put(FROM_ID, fromId);
+  public void setFromUser(String fromUser) {
+    put(FROM_USER, fromUser);
+  }
+
+  public String getToUser() {
+    return getString(TO_USER);
+  }
+
+  public void setToUser(String toUser) {
+    put(TO_USER, toUser);
   }
 
   public String getText() {
@@ -54,15 +59,7 @@ public class Msg extends AVObject {
   }
 
   public void setText(String text) {
-    put(TEXT,text);
-  }
-
-  public String getRoom() {
-    return getString(ROOM);
-  }
-
-  public void setRoom(String room) {
-    put(ROOM,room);
+    put(TEXT, text);
   }
 
   public Date getPostTime() {
@@ -70,36 +67,19 @@ public class Msg extends AVObject {
   }
 
   public void setPostTime(Date postTime) {
-    put(POST_TIME,postTime);
+    put(POST_TIME, postTime);
   }
 
   public int getLength() {
-    return length;
+    return getInt(LENGTH);
   }
 
   public void setLength(int length) {
-    this.length = length;
-  }
-
-  public static List<Msg> getRoomMsgs(DBHelper dbHelper,int start) {
-    int count=DBMsg.getMsgsCountByDB(dbHelper);
-    try {
-      AVQuery<Msg> q=AVObject.getQuery(Msg.class);
-      q.setLimit(1000);
-      q.whereEqualTo(ROOM, App.room);
-      q.skip(count);
-      q.orderByAscending(CREATED_AT);
-      List<Msg> msgs ;
-      msgs = q.find();
-      DBMsg.insertMsgs(dbHelper,msgs);
-    } catch (AVException e) {
-      e.printStackTrace();
-    }
-    return DBMsg.getRoomMsgsByDB(dbHelper, start);
+    put(LENGTH, length);
   }
 
   public boolean isText() {
-    return getText()!=null;
+    return getText() != null;
   }
 
   public String getVoicePath() {

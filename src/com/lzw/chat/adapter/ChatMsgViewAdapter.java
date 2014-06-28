@@ -1,7 +1,6 @@
 package com.lzw.chat.adapter;
 
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.lzw.chat.R;
 import com.lzw.chat.entity.ChatMsgEntity;
-import com.lzw.chat.util.Logger;
+import com.lzw.chat.utils.Logger;
 
 import java.util.List;
 
