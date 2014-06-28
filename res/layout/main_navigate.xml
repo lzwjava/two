@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/gray_background"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/tabMsg"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/message_selected"
+            android:fitsSystemWindows="true" />
+
+        <TextView
+            android:id="@+id/newmessagesnumber"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/tabMsg"
+            android:background="@drawable/number"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/tabFriends"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/linkman_selector"
+            android:button="@null" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/tabdynamic"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/dynamic_selector"
+            android:button="@null"
+            android:clickable="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/tabset"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/set_selector"
+            android:button="@null" />
+    </RelativeLayout>
+</LinearLayout>
+
